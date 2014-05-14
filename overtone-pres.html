@@ -1,0 +1,692 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Music Composition with Overtone</title>
+<meta name="author" content="(Tom Willis)"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/2.6.2/css/reveal.min.css"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/2.6.2/css/theme/moon.css" id="theme"/>
+<link rel="stylesheet" href=""/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/2.6.2/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<h1>Music Composition with Overtone</h1>
+<h2>Tom Willis</h2>
+<h2><a href="mailto:"></a></h2>
+<h2></h2></section>
+
+
+<section>
+<section id="sec-1" >
+
+<h2>The music writing process(for me)</h2>
+</section>
+<section id="sec-1-1" >
+
+<h3>it starts with an idea</h3>
+<ul class="org-ul">
+<li>maybe a lyric or theme(rarely/never)
+</li>
+<li>or a "riff" (always)
+</li>
+</ul>
+
+
+</section>
+<section id="sec-1-2" >
+
+<h3>ideas beget more ideas</h3>
+<ul class="org-ul">
+<li>more riffs
+</li>
+<li>gradually you decide on an order to play them (sequence)
+</li>
+<li>eventually the song is "finished"
+</li>
+</ul>
+</section>
+
+
+</section>
+<section>
+<section id="sec-2" >
+
+<h2>Tools(for composing)</h2>
+</section>
+<section id="sec-2-1" >
+
+<h3>The band</h3>
+</section>
+<section id="sec-2-1-1" >
+
+<h4>Paperback(2000-2004)</h4>
+<p>
+At our "peak"
+</p>
+
+<ul class="org-ul">
+<li>at least one new song/idea per practice that we all felt comfortable
+playing live
+</li>
+</ul>
+
+
+</section>
+<section id="sec-2-1-2" >
+
+<h4>Pros</h4>
+<ul class="org-ul">
+<li>very productive, almost magical
+</li>
+</ul>
+
+
+
+</section>
+<section id="sec-2-1-3" >
+
+<h4>cons</h4>
+<ul class="org-ul">
+<li>schedules
+</li>
+<li>personalities
+</li>
+<li>interests
+</li>
+<li>you name it&#x2026;.
+</li>
+</ul>
+
+
+
+</section>
+<section id="sec-2-2" >
+
+<h3>most software(i've tried)</h3>
+<ul class="org-ul">
+<li>pros
+<ul class="org-ul">
+<li>none of the cons of a band
+</li>
+</ul>
+</li>
+<li>cons
+<ul class="org-ul">
+<li>none of the pros of a band either
+</li>
+</ul>
+<p>
+except for&#x2026;
+</p>
+</li>
+</ul>
+</section>
+
+</section>
+<section>
+<section id="sec-3" >
+
+<h2>the muzical wizard</h2>
+<ul class="org-ul">
+<li>very productive/magical
+</li>
+</ul>
+
+
+</section>
+<section id="sec-3-1" >
+
+<h3>Why?</h3>
+<ul class="org-ul">
+<li>minimum effort to construct a "riff"
+</li>
+<li>minimum effort to "arrange" into a potential song
+</li>
+<li>tight feedback loop leads to refinement
+</li>
+</ul>
+
+
+</section>
+<section id="sec-3-2" >
+
+<h3>But</h3>
+<ul class="org-ul">
+<li>windows 95 only
+</li>
+<li>closed source
+</li>
+<li>2 man company now does other things
+</li>
+</ul>
+
+
+<p>
+:(
+</p>
+</section>
+
+
+</section>
+<section>
+<section id="sec-4" >
+
+<h2>So the other day</h2>
+</section>
+
+</section>
+<section>
+<section id="sec-5" >
+
+<h2>Overtone</h2>
+<p>
+Supercollider + Clojure = maybe awesome?
+</p>
+
+
+</section>
+<section id="sec-5-1" >
+
+<h3>maybe awesome?</h3>
+<ul class="org-ul">
+<li>sound synthesis
+</li>
+<li>live performance
+</li>
+<li>composing
+</li>
+</ul>
+
+
+</section>
+<section id="sec-5-2" >
+
+<h3>what if?</h3>
+<p>
+a dsl for composing
+</p>
+
+<p>
+could it fill the void?
+</p>
+</section>
+
+
+
+</section>
+<section>
+<section id="sec-6" >
+
+<h2>Codez!!!!</h2>
+</section>
+<section id="sec-6-1" >
+
+<h3>Data: note</h3>
+<ul class="org-ul">
+<li>pitch
+</li>
+<li>volume
+</li>
+<li>duration
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">defn</span> <span style="color: #6a5acd;">mk-note</span> [pitch volume length]
+  {<span style="color: #6b8e23;">:pitch</span> pitch <span style="color: #6b8e23;">:volume</span> volume <span style="color: #6b8e23;">:length</span> length})
+</pre>
+</div>
+
+</section>
+<section id="sec-6-2" >
+
+<h3>Data: notes</h3>
+<ul class="org-ul">
+<li>note..n
+</li>
+<li>when to play it
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">defn</span> <span style="color: #6a5acd;">mk-note-seq</span> [pitches volumes lengths play-ats]
+  (<span style="color: #87ceeb;">map</span> (<span style="color: #00ffff;">fn</span> [n p] {<span style="color: #6b8e23;">:note</span> n <span style="color: #6b8e23;">:play-at</span> p}) (<span style="color: #87ceeb;">map</span> mk-note pitches volumes lengths) play-ats))
+</pre>
+</div>
+
+</section>
+<section id="sec-6-3" >
+
+<h3>Fn: Synth</h3>
+<ul class="org-ul">
+<li>frequency
+</li>
+<li>volume
+</li>
+<li>duration
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">definst</span> <span style="color: #6a5acd;">flute</span> [frequency 440 volume 1 length 1000]
+  (<span style="color: #00ffff;">let</span> [envelope (line volume 0 (<span style="color: #87ceeb;">/</span> length 1000) <span style="color: #6b8e23;">:action</span> <span style="color: #c397d8;">FREE</span>)] 
+    (<span style="color: #87ceeb;">*</span> envelope (sin-osc frequency))))
+</pre>
+</div>
+
+</section>
+<section id="sec-6-4" >
+
+<h3>ISSUE: pitch-&gt;frequency</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">defn</span> <span style="color: #6a5acd;">pitch-&gt;hz</span> [pitch]
+  (<span style="color: #00ffff;">-&gt;&gt;</span> pitch
+       note
+       midi-&gt;hz))
+</pre>
+</div>
+</section>
+<section id="sec-6-5" >
+
+<h3>ISSUE: beat-&gt;ms</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">defn</span> <span style="color: #6a5acd;">beat-&gt;ms</span> [beat tempo]
+  (tempo beat))
+</pre>
+</div>
+
+</section>
+<section id="sec-6-6" >
+
+<h3>ISSUE: duration-&gt;ms</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">defn</span> <span style="color: #6a5acd;">duration-&gt;ms</span> [duration tempo]
+  (<span style="color: #87ceeb;">-</span> (beat-&gt;ms duration tempo) (tempo 0)))
+</pre>
+</div>
+
+</section>
+<section id="sec-6-7" >
+
+<h3>TEST: Yankee Doodle</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">def</span> <span style="color: #6a5acd;">yankee-doodle</span> (mk-note-seq 
+                    [<span style="color: #6b8e23;">:c6</span> <span style="color: #6b8e23;">:c6</span> <span style="color: #6b8e23;">:d6</span> <span style="color: #6b8e23;">:e6</span> <span style="color: #6b8e23;">:c6</span> <span style="color: #6b8e23;">:e6</span> <span style="color: #6b8e23;">:d6</span>] 
+                    [1 1 1 1 1 1 1] 
+                    [1/2 1/2 1/2 1/2 1/2 1/2 1]
+                    [0 1/2 1 3/2 2 5/2 3]))
+
+(<span style="color: #00ffff;">def</span> <span style="color: #6a5acd;">tempo</span> (metronome 120))
+
+(<span style="color: #00ffff;">doseq</span> [{note <span style="color: #6b8e23;">:note</span> play-at <span style="color: #6b8e23;">:play-at</span>} yankee-doodle]
+  (at (beat-&gt;ms play-at tempo)
+      (flute (pitch-&gt;hz (<span style="color: #6b8e23;">:pitch</span> note))
+             (<span style="color: #6b8e23;">:volume</span> note)
+             (duration-&gt;ms (<span style="color: #6b8e23;">:length</span> note) tempo))))
+</pre>
+</div>
+</section>
+<section id="sec-6-8" >
+
+<h3>FN: play-notes</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">defn</span> <span style="color: #6a5acd;">play-notes</span> [notes inst tempo]
+  (<span style="color: #00ffff;">doseq</span> [{note <span style="color: #6b8e23;">:note</span> play-at <span style="color: #6b8e23;">:play-at</span>} notes]
+    (at (beat-&gt;ms play-at tempo)
+        (inst (pitch-&gt;hz (<span style="color: #6b8e23;">:pitch</span> note))
+              (<span style="color: #6b8e23;">:volume</span> note)
+              (duration-&gt;ms (<span style="color: #6b8e23;">:length</span> note) tempo)))))
+</pre>
+</div>
+
+</section>
+<section id="sec-6-9" >
+
+<h3>Scaling up</h3>
+<ul class="org-ul">
+<li>chords
+</li>
+<li>bars
+</li>
+</ul>
+
+
+</section>
+<section id="sec-6-10" >
+
+<h3>Chords</h3>
+<ul class="org-ul">
+<li>sequence of notes(played at same time)
+</li>
+</ul>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">def</span> <span style="color: #6a5acd;">a-chord</span> (mk-note-seq [<span style="color: #6b8e23;">:e2</span> <span style="color: #6b8e23;">:b2</span> <span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:g#3</span> <span style="color: #6b8e23;">:b3</span> <span style="color: #6b8e23;">:e4</span>] <span style="color: #969896; font-style: italic;">;; </span><span style="color: #999999; font-style: italic;">open e major power chord(guitar speak)</span>
+                           [1 1 1 1 1 1]
+                           [4 4 4 4 4 4]
+                           [0 0 0 0 0 0]))
+
+ (play-notes a-chord flute (metronome 120))
+
+ (<span style="color: #00ffff;">def</span> <span style="color: #6a5acd;">another-chord</span> (mk-note-seq (<span style="color: #87ceeb;">concat</span> (chord <span style="color: #6b8e23;">:c4</span> <span style="color: #6b8e23;">:major</span>) (chord <span style="color: #6b8e23;">:eb4</span> <span style="color: #6b8e23;">:major</span>))
+                                 [1 1 1 1 1 1]
+                                 [4 4 4 4 4 4]
+                                 [0 0 0 0 0 0]))
+
+ (play-notes another-chord flute (metronome 120))
+</pre>
+</div>
+
+</section>
+<section id="sec-6-11" >
+
+<h3>Adjusting for Chords</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">defn</span> <span style="color: #6a5acd;">mk-note</span> 
+  <span style="color: #c397d8;">"return collection of {:pitch :volume :length}"</span>
+  [pitch volume length]
+  (<span style="color: #00ffff;">let</span> [pitches (<span style="color: #00ffff;">if</span> (<span style="color: #87ceeb;">not</span> (<span style="color: #87ceeb;">coll?</span> pitch)) [pitch] pitch)]
+    (<span style="color: #87ceeb;">map</span> (<span style="color: #00ffff;">fn</span> [p] {<span style="color: #6b8e23;">:pitch</span> p <span style="color: #6b8e23;">:volume</span> volume <span style="color: #6b8e23;">:length</span> length}) pitches)))
+
+<span style="color: #969896; font-style: italic;">;; </span><span style="color: #999999; font-style: italic;">refactor this</span>
+(<span style="color: #00ffff;">defn</span> <span style="color: #6a5acd;">mk-note-seq</span>
+  <span style="color: #c397d8;">"return collection of {:note {:pitch :volume :length} :play-at}"</span>
+  [pitches volumes lengths play-ats]
+  (<span style="color: #00ffff;">let</span> [intermediates (<span style="color: #87ceeb;">map</span> (<span style="color: #00ffff;">fn</span> [a b] [a b]) (<span style="color: #87ceeb;">map</span> mk-note pitches volumes lengths) play-ats)]
+    (<span style="color: #87ceeb;">flatten</span> 
+     (<span style="color: #87ceeb;">map</span> (<span style="color: #00ffff;">fn</span> [intermediate] 
+            (<span style="color: #87ceeb;">map</span> (<span style="color: #00ffff;">fn</span> [n] 
+                   {<span style="color: #6b8e23;">:note</span> n <span style="color: #6b8e23;">:play-at</span> (<span style="color: #87ceeb;">last</span> intermediate)}) (<span style="color: #87ceeb;">first</span> intermediate))) intermediates))))
+</pre>
+</div>
+
+</section>
+<section id="sec-6-12" >
+
+<h3>TEST: melody</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">def</span> <span style="color: #6a5acd;">melody</span> (mk-note-seq [(chord <span style="color: #6b8e23;">:c4</span> <span style="color: #6b8e23;">:major</span>) <span style="color: #6b8e23;">:f4</span> 
+                          (chord <span style="color: #6b8e23;">:g3</span> <span style="color: #6b8e23;">:major</span>) <span style="color: #6b8e23;">:f#3</span> 
+                          (chord <span style="color: #6b8e23;">:d4</span> <span style="color: #6b8e23;">:minor</span>) <span style="color: #6b8e23;">:g4</span> 
+                          (chord <span style="color: #6b8e23;">:a3</span> <span style="color: #6b8e23;">:minor</span>) <span style="color: #6b8e23;">:b3</span> 
+                          (chord <span style="color: #6b8e23;">:e4</span> <span style="color: #6b8e23;">:minor</span>) <span style="color: #6b8e23;">:e3</span> 
+                          (chord <span style="color: #6b8e23;">:e4</span> <span style="color: #6b8e23;">:minor</span>) <span style="color: #6b8e23;">:e3</span> 
+                          (chord <span style="color: #6b8e23;">:f4</span> <span style="color: #6b8e23;">:major</span>) <span style="color: #6b8e23;">:f3</span> 
+                          (chord <span style="color: #6b8e23;">:f4</span> <span style="color: #6b8e23;">:major</span>) <span style="color: #6b8e23;">:g3</span> 
+                          (chord <span style="color: #6b8e23;">:c4</span> <span style="color: #6b8e23;">:major</span>)]
+                         [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]
+                         [4 2 4 2 4 2 4 2 4 2 4 2 4 2 4 2 2 8]
+                         [0 2 3 5 6 8 9 11 12 14 15 17 18 20 21 23 24 26]))
+
+(play-notes melody flute (metronome 120))
+(play-notes yankee-doodle flute (metronome 120))
+</pre>
+</div>
+
+</section>
+<section id="sec-6-13" >
+
+<h3>Bar/measure/phrase</h3>
+<ul class="org-ul">
+<li>sequence of notes + beats per bar
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">defn</span> <span style="color: #6a5acd;">mk-bar</span> [pitches volumes lengths play-ats &amp; {<span style="color: #6b8e23;">:keys</span> [beats-per] <span style="color: #6b8e23;">:or</span> {beats-per 4}}]
+  {<span style="color: #6b8e23;">:beats-per</span> beats-per <span style="color: #6b8e23;">:sequence</span> (mk-note-seq pitches volumes lengths play-ats)})
+</pre>
+</div>
+
+</section>
+<section id="sec-6-14" >
+
+<h3>ISSUE: when to start</h3>
+<ul class="org-ul">
+<li>given: sequence of bars
+<ul class="org-ul">
+<li>each with # of beats
+</li>
+</ul>
+</li>
+<li>update with start-at beat
+</li>
+<li>result: indicate at which beat in the song to play the bar
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">defn</span> <span style="color: #6a5acd;">do-start-at</span> [bars]
+  (<span style="color: #00ffff;">loop</span> [ l (<span style="color: #87ceeb;">rest</span> bars) acc [(<span style="color: #87ceeb;">assoc-in</span> (<span style="color: #87ceeb;">first</span> bars) [<span style="color: #6b8e23;">:start-at</span>] 1)]]
+    (<span style="color: #00ffff;">if</span> (<span style="color: #87ceeb;">empty?</span> l)
+      acc
+      (<span style="color: #00ffff;">recur</span> (<span style="color: #87ceeb;">rest</span> l) 
+             (<span style="color: #87ceeb;">conj</span> acc 
+                   (<span style="color: #87ceeb;">assoc-in</span> (<span style="color: #87ceeb;">first</span> l) [<span style="color: #6b8e23;">:start-at</span>] 
+                             (<span style="color: #87ceeb;">+</span> (<span style="color: #6b8e23;">:start-at</span> (<span style="color: #87ceeb;">last</span> acc)) (<span style="color: #6b8e23;">:beats-per</span> (<span style="color: #87ceeb;">first</span> l)))))))))
+</pre>
+</div>
+
+</section>
+<section id="sec-6-15" >
+
+<h3>FN: play-notes</h3>
+<ul class="org-ul">
+<li>add start-at param default to 1
+</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">defn</span> <span style="color: #6a5acd;">play-notes</span> [notes inst tempo &amp; {<span style="color: #6b8e23;">:keys</span> [start-at] <span style="color: #6b8e23;">:or</span> {start-at 1}}]
+  (<span style="color: #00ffff;">doseq</span> [{note <span style="color: #6b8e23;">:note</span> play-at <span style="color: #6b8e23;">:play-at</span>} notes]
+    (at (beat-&gt;ms (<span style="color: #87ceeb;">+</span> start-at play-at) tempo)
+        (inst (pitch-&gt;hz (<span style="color: #6b8e23;">:pitch</span> note))
+              (<span style="color: #6b8e23;">:volume</span> note)
+              (duration-&gt;ms (<span style="color: #6b8e23;">:length</span> note) tempo)))))
+</pre>
+</div>
+
+</section>
+<section id="sec-6-16" >
+
+<h3>FN: play-bars</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">defn</span> <span style="color: #6a5acd;">play-bars</span> [bars inst tempo &amp; {<span style="color: #6b8e23;">:keys</span> [start-at] <span style="color: #6b8e23;">:or</span> {start-at 0}}]
+  (<span style="color: #00ffff;">let</span> [the-bars (do-start-at bars)]
+    (<span style="color: #00ffff;">doseq</span> [{bar <span style="color: #6b8e23;">:sequence</span> bar-start-at <span style="color: #6b8e23;">:start-at</span>} the-bars]
+      (play-notes bar inst tempo <span style="color: #6b8e23;">:start-at</span> (<span style="color: #87ceeb;">+</span> start-at bar-start-at)))))
+</pre>
+</div>
+
+</section>
+<section id="sec-6-17" >
+
+<h3>TEST: primary</h3>
+<iframe width="420" height="315" src="http://www.youtube.com/embed/0xrZ61cuKLk" frameborder="0" allowfullscreen></iframe>
+
+</section>
+<section id="sec-6-17-1" >
+
+<h4>Bass Parts</h4>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">def</span> <span style="color: #6a5acd;">bass-e</span> (mk-bar (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> [<span style="color: #6b8e23;">:e2</span> <span style="color: #6b8e23;">:e3</span>]))
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> 2))
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> 1/2))
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">range</span> 0 4 1/2))))
+
+  (<span style="color: #00ffff;">def</span> <span style="color: #6a5acd;">bass-a</span> (mk-bar (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> [<span style="color: #6b8e23;">:a2</span> <span style="color: #6b8e23;">:a3</span>]))
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> 2))
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> 1/2))
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">range</span> 0 4 1/2))))
+  (<span style="color: #00ffff;">def</span> <span style="color: #6a5acd;">bass-a2</span> (mk-bar [[<span style="color: #6b8e23;">:a2</span> <span style="color: #6b8e23;">:a3</span> <span style="color: #6b8e23;">:d4</span>] [<span style="color: #6b8e23;">:a2</span> <span style="color: #6b8e23;">:a3</span> <span style="color: #6b8e23;">:d4</span>] [<span style="color: #6b8e23;">:a2</span> <span style="color: #6b8e23;">:a3</span> <span style="color: #6b8e23;">:d4</span>] [<span style="color: #6b8e23;">:a2</span> <span style="color: #6b8e23;">:a3</span> <span style="color: #6b8e23;">::c#4</span>] [<span style="color: #6b8e23;">:a2</span> <span style="color: #6b8e23;">:a3</span> <span style="color: #6b8e23;">::c#4</span>] [<span style="color: #6b8e23;">:a2</span> <span style="color: #6b8e23;">:a3</span> <span style="color: #6b8e23;">::c#4</span>] [<span style="color: #6b8e23;">:a2</span> <span style="color: #6b8e23;">:a3</span> <span style="color: #6b8e23;">:d4</span>] [<span style="color: #6b8e23;">:a2</span> <span style="color: #6b8e23;">:a3</span> <span style="color: #6b8e23;">:d4</span>]]
+                       (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> 2))
+                       (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> 1/2))
+                       (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">range</span> 0 4 1/2))))
+</pre>
+</div>
+
+</section>
+<section id="sec-6-17-2" >
+
+<h4>Guitar Parts</h4>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">def</span> <span style="color: #6a5acd;">guitar-1</span> (mk-bar [[<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:e4</span> <span style="color: #6b8e23;">:e5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:e4</span> <span style="color: #6b8e23;">:e5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:e4</span> <span style="color: #6b8e23;">:e5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:f#4</span> <span style="color: #6b8e23;">:f#5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:f#4</span> <span style="color: #6b8e23;">:f#5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:f#4</span> <span style="color: #6b8e23;">:f#5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:e4</span> <span style="color: #6b8e23;">:e5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:e4</span> <span style="color: #6b8e23;">:e5</span>]]
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> 3))
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> 1/2))
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">range</span> 0 4 1/2))
+                      ))
+(<span style="color: #00ffff;">def</span> <span style="color: #6a5acd;">guitar-2</span> (mk-bar [[<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:g4</span> <span style="color: #6b8e23;">:g5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:g4</span> <span style="color: #6b8e23;">:g5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:g4</span> <span style="color: #6b8e23;">:g5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:a4</span> <span style="color: #6b8e23;">:a5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:a4</span> <span style="color: #6b8e23;">:a5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:a4</span> <span style="color: #6b8e23;">:a5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:g4</span> <span style="color: #6b8e23;">:g5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:g4</span> <span style="color: #6b8e23;">:g5</span>]]
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> 3))
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> 1/2))
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">range</span> 0 4 1/2))
+                      ))
+(<span style="color: #00ffff;">def</span> <span style="color: #6a5acd;">guitar-3</span> (mk-bar [[<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:d4</span> <span style="color: #6b8e23;">:d5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:d4</span> <span style="color: #6b8e23;">:d5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:d4</span> <span style="color: #6b8e23;">:d5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:c#4</span> <span style="color: #6b8e23;">:c#5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:c#4</span> <span style="color: #6b8e23;">:c#5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:c#4</span> <span style="color: #6b8e23;">:c#5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:d4</span> <span style="color: #6b8e23;">:d5</span>] [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:d4</span> <span style="color: #6b8e23;">:d5</span>]]
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> 3))
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> 1/2))
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">range</span> 0 4 1/2))
+                      ))
+(<span style="color: #00ffff;">def</span> <span style="color: #6a5acd;">guitar-4</span> (mk-bar (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> [<span style="color: #6b8e23;">:e3</span> <span style="color: #6b8e23;">:b5</span> <span style="color: #6b8e23;">:b6</span>]))
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> 3))
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">repeat</span> 1/2))
+                      (<span style="color: #87ceeb;">take</span> 8 (<span style="color: #87ceeb;">range</span> 0 4 1/2))
+                      ))
+</pre>
+</div>
+
+</section>
+<section id="sec-6-17-3" >
+
+<h4>Assembling</h4>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(<span style="color: #00ffff;">def</span> <span style="color: #6a5acd;">the-bass-part</span> [bass-e bass-a bass-e bass-a2])
+(<span style="color: #00ffff;">def</span> <span style="color: #6a5acd;">the-guitar-part</span> [guitar-1 guitar-2 guitar-1 guitar-3 guitar-1 guitar-2 guitar-4 guitar-4])
+
+(<span style="color: #00ffff;">def</span> <span style="color: #6a5acd;">m</span> (metronome 180))
+
+(play-bars (<span style="color: #87ceeb;">flatten</span> (<span style="color: #87ceeb;">take</span> 16 (<span style="color: #87ceeb;">repeat</span> the-bass-part))) flute m)
+
+(play-bars the-guitar-part flute m <span style="color: #6b8e23;">:start-at</span> 32)
+(play-bars the-guitar-part flute m <span style="color: #6b8e23;">:start-at</span> 128)
+</pre>
+</div>
+</section>
+
+</section>
+<section>
+<section id="sec-7" >
+
+<h2>The Verdict</h2>
+<p>
+looks promising
+</p>
+</section>
+
+</section>
+<section>
+<section id="sec-8" >
+
+<h2>outstanding issues</h2>
+<ul class="org-ul">
+<li>learn more clojure
+</li>
+<li>learn more overtone
+</li>
+<li>more instruments
+</li>
+<li>drums (good ones)
+</li>
+</ul>
+</section>
+
+</section>
+<section>
+<section id="sec-9" >
+
+<h2>Links</h2>
+<ul class="org-ul">
+<li><a href="http://overtone.github.io/">Overtone</a>
+</li>
+<li><a href="http://supercollider.sourceforge.net/">Supercollider</a>
+</li>
+<li><a href="http://youtu.be/imoWGsipe4k">Programming Music With Overtone - Sam Aaron</a>
+</li>
+<li><a href="http://youtu.be/Mfsnlbd-4xQ">Functional Composition - Chris Ford</a>
+</li>
+<li><a href="http://www.geocities.ws/midibrainz/">The Muzical Wizard</a>
+</li>
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/2.6.2/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/2.6.2/js/reveal.min.js"></script>
+<script>
+
+        		// Full list of configuration options available here:
+        		// https://github.com/hakimel/reveal.js#configuration
+        		Reveal.initialize({
+        			controls: true,
+        			progress: true,
+        			history: false,
+        			center: true,
+                                slideNumber: true,
+        			rollingLinks: false,
+        			keyboard: true,
+        			overview: true,
+        			 // slide width
+        			 // slide height
+        			 // slide margin
+        			 // slide minimum scaling factor
+        			 // slide maximum scaling factor
+
+
+        			theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        			transition: Reveal.getQueryHash().transition || 'zoom', // default/cube/page/concave/zoom/linear/fade/none
+        			transitionSpeed: 'default',
+
+        			// Optional libraries used to extend on reveal.js
+        			dependencies: [
+        				{ src: 'http://cdn.jsdelivr.net/reveal.js/2.6.2/lib/js/classList.js', condition: function() { return !document.body.classList; } }
+        				,{ src: 'http://cdn.jsdelivr.net/reveal.js/2.6.2/plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } }
+        				,{ src: 'http://cdn.jsdelivr.net/reveal.js/2.6.2/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } }
+        				,{ src: 'http://cdn.jsdelivr.net/reveal.js/2.6.2/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        				,{ src: 'http://cdn.jsdelivr.net/reveal.js/2.6.2/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }
+        				,{ src: 'http://cdn.jsdelivr.net/reveal.js/2.6.2/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        				// { src: 'http://cdn.jsdelivr.net/reveal.js/2.6.2/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+        				// { src: 'http://cdn.jsdelivr.net/reveal.js/2.6.2/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+         				,
+        			]
+        		});
+</script>
+</body>
+</html>
