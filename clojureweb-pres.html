@@ -1,0 +1,165 @@
+#+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/2.6.2/
+#+OPTIONS: reveal_center:t reveal_control:t reveal_height:-1
+#+OPTIONS: reveal_history:nil reveal_keyboard:t reveal_mathjax:nil
+#+OPTIONS: reveal_overview:t reveal_progress:t
+#+OPTIONS: reveal_rolling_links:nil reveal_slide_number:t
+#+OPTIONS: reveal_width:-1
+#+REVEAL_EXTRA_CSS:
+#+REVEAL_EXTRA_JS: 
+#+REVEAL_HEAD_PREAMBLE:
+#+REVEAL_HLEVEL: 1
+#+REVEAL_MARGIN: -1
+#+REVEAL_MATHJAX_URL: http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+#+REVEAL_MAX_SCALE: -1
+#+REVEAL_MIN_SCALE: -1
+#+REVEAL_POSTAMBLE:
+#+REVEAL_PREAMBLE:
+#+REVEAL_SPEED: default
+#+REVEAL_THEME: moon
+#+REVEAL_TRANS: zoom
+#+OPTIONS: email:nil toc:nil creator:nil num:nil
+
+
+#+TITLE: A Very brief overview of Clojure's web
+#+AUTHOR: Tom Willis
+#+EMAIL: 
+
+
+* What's in a web framework
+
+  AFAIK: there's no "rails" or "django"-like framework  written in clojure. And that's OK.
+
+  Here's Why
+
+** My Definition
+
+   To me, a web framework provides...
+   
+   - abstraction for http request and response
+   - some way to dispatch to your code
+   - templates
+
+*** Bonus
+
+    - an object relational mapper
+    - database migrations
+    - authentication
+    - <your favorite thing in your favorite framework>
+    
+** HTTP(ring)
+
+[[https://github.com/ring-clojure/ring][Ring]] is a lib that specifies the http abstraction(it's just a map) and
+provides some useful middleware for working with that abstraction(more later)
+
+
+
+*** Request
+#+NAME: "ring request"
+#+BEGIN_SRC clojure
+{:ssl-client-cert nil,
+ :remote-addr "0:0:0:0:0:0:0:1",
+ :scheme :http,
+ :request-method :get,
+ :query-string "qs=1",
+ :content-type nil,
+ :uri "/test/path/",
+ :server-name "localhost",
+ :headers
+ {"accept-encoding" "gzip,deflate,sdch",
+  "connection" "keep-alive",
+  "user-agent"
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36
+  (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36",
+  "accept-language" "en-US,en;q=0.8",
+  "accept"
+  "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+  "host" "localhost:3000",
+  "cookie" ""},
+ :content-length nil,
+ :server-port 3000,
+ :character-encoding nil,
+ :body #<HttpInput org.eclipse.jetty.server.HttpInput@43efe432>}
+#+END_SRC
+
+*** Response
+#+NAME: "ring response"
+#+BEGIN_SRC clojure
+{:headers {"Content-Type" "text/plain"},
+ :status 200,
+ :body "hello world"}
+#+END_SRC
+
+
+*** Simplest web app
+
+#+BEGIN_SRC clojure
+(defn hello-app [request]
+  {:status 200 :body "hello world"})
+#+END_SRC
+
+*** And something to serve it...
+
+#+BEGIN_SRC clojure
+(ns hello
+  (:require [ring.adapter.jetty :as jetty]))
+
+(defn hello-app [request]
+  {:status 200 :body "hello world"})
+
+(defn -main []
+  ;; Run the server on port 3000
+  (jetty/run-jetty handler {:port 3000}))
+
+#+END_SRC
+
+** Routing
+
+   [[https://github.com/weavejester/compojure][Compojure]] can provide routing to functions that is more in line
+   with what we have come to expect from a web framework
+
+#+BEGIN_SRC clojure
+
+(defroutes app-handler
+  (GET "/api/artists/:artist-id/albums/:album-id/tracks/:track-id"
+       [artist-id album-id track-id]
+       (track-detail artist-id album-id track-id))
+  (POST "/api/mounts" [new-mount]
+        (add-new-mount new-mount))
+  (DELETE "/api/mounts" [mount]
+          (delete-mount mount))
+  (POST "/api/do-scan" []
+        (do-scan))
+  (GET "/index.html" [] (render-to-response (page)))
+  (GET "/" []
+       {:status 302
+        :headers {"Location" "/index.html"}}))
+
+(def app
+  (-> app-handler
+      (wrap-params)
+      (j/wrap-json-response)
+      (m/wrap-resource "public")
+      (wrap-not-modified)
+      (wrap-content-type)
+      (wrap-gzip)
+      (wrap-partial-content)))
+#+END_SRC
+   
+
+** Templating
+
+[[https://github.com/weavejester/hiccup/][hiccup]]
+
+- + simple
+- - dangerous (no string escaping)  
+
+[[https://github.com/cgrand/enlive][enlive]]
+
+- + powerful
+- - complex
+
+** Middleware
+
+   session
+   db connection
+   cache/memoize
