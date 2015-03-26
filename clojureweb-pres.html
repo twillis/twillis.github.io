@@ -1,62 +1,98 @@
-#+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/2.6.2/
-#+OPTIONS: reveal_center:t reveal_control:t reveal_height:-1
-#+OPTIONS: reveal_history:nil reveal_keyboard:t reveal_mathjax:nil
-#+OPTIONS: reveal_overview:t reveal_progress:t
-#+OPTIONS: reveal_rolling_links:nil reveal_slide_number:t
-#+OPTIONS: reveal_width:-1
-#+REVEAL_EXTRA_CSS:
-#+REVEAL_EXTRA_JS: 
-#+REVEAL_HEAD_PREAMBLE:
-#+REVEAL_HLEVEL: 1
-#+REVEAL_MARGIN: -1
-#+REVEAL_MATHJAX_URL: http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
-#+REVEAL_MAX_SCALE: -1
-#+REVEAL_MIN_SCALE: -1
-#+REVEAL_POSTAMBLE:
-#+REVEAL_PREAMBLE:
-#+REVEAL_SPEED: default
-#+REVEAL_THEME: moon
-#+REVEAL_TRANS: zoom
-#+OPTIONS: email:nil toc:nil creator:nil num:nil
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>A Very brief overview of Clojure's web</title>
+<meta name="author" content="(Tom Willis)"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/2.6.2/css/reveal.css"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/2.6.2/css/theme/moon.css" id="theme"/>
+<link rel="stylesheet" href=""/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/2.6.2/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<h1>A Very brief overview of Clojure's web</h1>
+<h2>Tom Willis</h2>
+<h2><a href="mailto:"></a></h2>
+<h2></h2>
+</section>
 
 
-#+TITLE: A Very brief overview of Clojure's web
-#+AUTHOR: Tom Willis
-#+EMAIL: 
+<section>
+<section id="sec-1" >
 
+<h2>What's in a web framework</h2>
+<p>
+AFAIK: there's no "rails" or "django"-like framework  written in clojure. And that's OK.
+</p>
 
-* What's in a web framework
+<p>
+Here's Why
+</p>
 
-  AFAIK: there's no "rails" or "django"-like framework  written in clojure. And that's OK.
+</section>
+<section id="sec-1-1" >
 
-  Here's Why
+<h3>My Definition</h3>
+<p>
+To me, a web framework provides&#x2026;
+</p>
 
-** My Definition
+<ul class="org-ul">
+<li>abstraction for http request and response
+</li>
+<li>some way to dispatch to your code
+</li>
+<li>templates
+</li>
+</ul>
 
-   To me, a web framework provides...
-   
-   - abstraction for http request and response
-   - some way to dispatch to your code
-   - templates
+</section>
+<section id="sec-1-1-1" >
 
-*** Bonus
+<h4>Bonus</h4>
+<ul class="org-ul">
+<li>an object relational mapper
+</li>
+<li>database migrations
+</li>
+<li>authentication
+</li>
+<li>&lt;your favorite thing in your favorite framework&gt;
+</li>
+</ul>
 
-    - an object relational mapper
-    - database migrations
-    - authentication
-    - <your favorite thing in your favorite framework>
-    
-** HTTP(ring)
+</section>
+<section id="sec-1-2" >
 
-[[https://github.com/ring-clojure/ring][Ring]] is a lib that specifies the http abstraction(it's just a map) and
+<h3>HTTP(ring)</h3>
+<p>
+<a href="https://github.com/ring-clojure/ring">Ring</a> is a lib that specifies the http abstraction(it's just a map) and
 provides some useful middleware for working with that abstraction(more later)
+</p>
 
 
 
-*** Request
-#+NAME: "ring request"
-#+BEGIN_SRC clojure
-{:ssl-client-cert nil,
+</section>
+<section id="sec-1-2-1" >
+
+<h4>Request</h4>
+<div class="org-src-container">
+
+<pre  class="src src-clojure" id="ring-request">{:ssl-client-cert nil,
  :remote-addr "0:0:0:0:0:0:0:1",
  :scheme :http,
  :request-method :get,
@@ -78,29 +114,41 @@ provides some useful middleware for working with that abstraction(more later)
  :content-length nil,
  :server-port 3000,
  :character-encoding nil,
- :body #<HttpInput org.eclipse.jetty.server.HttpInput@43efe432>}
-#+END_SRC
+ :body #&lt;HttpInput org.eclipse.jetty.server.HttpInput@43efe432&gt;}
+</pre>
+</div>
 
-*** Response
-#+NAME: "ring response"
-#+BEGIN_SRC clojure
-{:headers {"Content-Type" "text/plain"},
+</section>
+<section id="sec-1-2-2" >
+
+<h4>Response</h4>
+<div class="org-src-container">
+
+<pre  class="src src-clojure" id="ring-response">{:headers {"Content-Type" "text/plain"},
  :status 200,
  :body "hello world"}
-#+END_SRC
+</pre>
+</div>
 
 
-*** Simplest web app
+</section>
+<section id="sec-1-2-3" >
 
-#+BEGIN_SRC clojure
-(defn hello-app [request]
+<h4>Simplest web app</h4>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(defn hello-app [request]
   {:status 200 :body "hello world"})
-#+END_SRC
+</pre>
+</div>
 
-*** And something to serve it...
+</section>
+<section id="sec-1-2-4" >
 
-#+BEGIN_SRC clojure
-(ns hello
+<h4>And something to serve it&#x2026;</h4>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(ns hello
   (:require [ring.adapter.jetty :as jetty]))
 
 (defn hello-app [request]
@@ -109,33 +157,37 @@ provides some useful middleware for working with that abstraction(more later)
 (defn -main []
   ;; Run the server on port 3000
   (jetty/run-jetty handler {:port 3000}))
+</pre>
+</div>
 
-#+END_SRC
+</section>
+<section id="sec-1-3" >
 
-** Routing
+<h3>Routing</h3>
+<p>
+<a href="https://github.com/weavejester/compojure">Compojure</a> can provide routing to functions that is more in line
+with what we have come to expect from a web framework
+</p>
 
-   [[https://github.com/weavejester/compojure][Compojure]] can provide routing to functions that is more in line
-   with what we have come to expect from a web framework
+<div class="org-src-container">
 
-#+BEGIN_SRC clojure
-
-(defroutes app-handler
+<pre  class="src src-clojure">(defroutes app-handler
   (GET "/api/artists/:artist-id/albums/:album-id/tracks/:track-id"
        [artist-id album-id track-id]
        (track-detail artist-id album-id track-id))
   (POST "/api/mounts" [new-mount]
-        (add-new-mount new-mount))
+	(add-new-mount new-mount))
   (DELETE "/api/mounts" [mount]
-          (delete-mount mount))
+	  (delete-mount mount))
   (POST "/api/do-scan" []
-        (do-scan))
+	(do-scan))
   (GET "/index.html" [] (render-to-response (page)))
   (GET "/" []
        {:status 302
-        :headers {"Location" "/index.html"}}))
+	:headers {"Location" "/index.html"}}))
 
 (def app
-  (-> app-handler
+  (-&gt; app-handler
       (wrap-params)
       (j/wrap-json-response)
       (m/wrap-resource "public")
@@ -143,23 +195,86 @@ provides some useful middleware for working with that abstraction(more later)
       (wrap-content-type)
       (wrap-gzip)
       (wrap-partial-content)))
-#+END_SRC
-   
+</pre>
+</div>
 
-** Templating
 
-[[https://github.com/weavejester/hiccup/][hiccup]]
+</section>
+<section id="sec-1-4" >
 
-- + simple
-- - dangerous (no string escaping)  
+<h3>Templating</h3>
+<p>
+<a href="https://github.com/weavejester/hiccup/">hiccup</a>
+</p>
 
-[[https://github.com/cgrand/enlive][enlive]]
+<ul class="org-ul">
+<li>+ simple
+</li>
+<li>- dangerous (no string escaping)  
+</li>
+</ul>
 
-- + powerful
-- - complex
+<p>
+<a href="https://github.com/cgrand/enlive">enlive</a>
+</p>
 
-** Middleware
+<ul class="org-ul">
+<li>+ powerful
+</li>
+<li>- complex
+</li>
+</ul>
 
-   session
-   db connection
-   cache/memoize
+</section>
+<section id="sec-1-5" >
+
+<h3>Middleware</h3>
+<p>
+session
+db connection
+cache/memoize
+</p>
+</section>
+</section>
+</div>
+</div>
+
+<script src="http://cdn.jsdelivr.net/reveal.js/2.6.2/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/2.6.2/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: true,
+rollingLinks: false,
+keyboard: true,
+overview: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'zoom', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/2.6.2/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/2.6.2/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/2.6.2/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/2.6.2/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/2.6.2/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/2.6.2/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+]
+});
+</script>
+</body>
+</html>
